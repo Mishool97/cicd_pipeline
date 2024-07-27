@@ -1,3 +1,4 @@
 pandas
 s3fs
 pyarrow
+pytest

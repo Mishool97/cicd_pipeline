@@ -51,5 +51,5 @@ jobs:
         docker login ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io -u ${{ secrets.AZURE_ACR_USERNAME }} -p ${{ secrets.AZURE_ACR_PASSWORD }}
     - name: Build and Push Docker Image
       run: |
-        docker build -t myregistry.azurecr.io/myfunctionapp:latest -f Dockerfile .
-        docker push myregistry.azurecr.io/myfunctionapp:latest
+        docker build -t ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/myfunctionapp:latest -f Dockerfile .
+        docker push ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/myfunctionapp:latest

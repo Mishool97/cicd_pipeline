@@ -48,7 +48,7 @@ jobs:
 
     - name: Log in to Azure Container Registry
       run: |
-        docker login ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io -u ${{ secrets.AZURE_ACR_USERNAME }} --p ${{ secrets.AZURE_ACR_PASSWORD }}
+        docker login ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io -u ${{ secrets.AZURE_ACR_USERNAME }} -p ${{ secrets.AZURE_ACR_PASSWORD }}
     - name: Build and Push Docker Image
       run: |
         docker build -t myregistry.azurecr.io/myfunctionapp:latest -f Dockerfile .

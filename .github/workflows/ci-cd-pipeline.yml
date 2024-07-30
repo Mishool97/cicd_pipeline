@@ -67,23 +67,23 @@ jobs:
     - name: Create Azure Function App if not exists
       if: env.exists == 'false'
       run: |
-        az functionapp create
-        --resource-group ${{ secrets.RESOURCE_GROUP }}
-        --consumption-plan-location francecentral
-        --os-type Linux --runtime python
-        --runtime-version 3.11
-        --functions-version 4
-        --name ${{ secrets.FUNCTION_APP_NAME }}
-        --storage-account ${{ secrets.STORAGE_ACCOUNT }}
-        --docker-registry-server-url https://${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io
+        az functionapp create \
+        --resource-group ${{ secrets.RESOURCE_GROUP }} \
+        --consumption-plan-location francecentral \
+        --os-type Linux --runtime python \
+        --runtime-version 3.11 \
+        --functions-version 4 \
+        --name ${{ secrets.FUNCTION_APP_NAME }} \
+        --storage-account ${{ secrets.STORAGE_ACCOUNT }} \
+        --docker-registry-server-url https://${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io \
         --docker-custom-image-name ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
 
     - name: Update Azure Function App with new Docker Image
       if: env.exists == 'true'
       run: |
-        az functionapp config container set
-        --name ${{ secrets.FUNCTION_APP_NAME }}
-        --resource-group ${{ secrets.RESOURCE_GROUP }}
+        az functionapp config container set \
+        --name ${{ secrets.FUNCTION_APP_NAME }} \
+        --resource-group ${{ secrets.RESOURCE_GROUP }} \
         --image ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
 
 

@@ -43,17 +43,17 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # - name: Set up Docker
-    #   uses: docker/setup-buildx-action@v2
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v2
 
-    # - name: Log in to Azure Container Registry
-    #   run: |
-    #     docker login ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io -u ${{ secrets.AZURE_ACR_USERNAME }} -p ${{ secrets.AZURE_ACR_PASSWORD }}
+    - name: Log in to Azure Container Registry
+      run: |
+        docker login ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io -u ${{ secrets.AZURE_ACR_USERNAME }} -p ${{ secrets.AZURE_ACR_PASSWORD }}
 
-    # - name: Build and Push Docker Image
-    #   run: |
-    #     docker build -t ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest -f Dockerfile .
-    #     docker push ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest -f Dockerfile .
+        docker push ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
 
     - name: Determine if Function App exists
       id: function_app_exists
@@ -67,11 +67,23 @@ jobs:
     - name: Create Azure Function App if not exists
       if: env.exists == 'false'
       run: |
-        az functionapp create --resource-group ${{ secrets.RESOURCE_GROUP }} --consumption-plan-location francecentral --runtime docker --functions-version 4 --name ${{ secrets.FUNCTION_APP_NAME }} --storage-account ${{ secrets.STORAGE_ACCOUNT }} --docker-registry-server-url https://${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io --docker-custom-image-name ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
+        az functionapp create
+        --resource-group ${{ secrets.RESOURCE_GROUP }}
+        --consumption-plan-location francecentral
+        --os-type Linux --runtime python
+        --runtime-version 3.11
+        --functions-version 4
+        --name ${{ secrets.FUNCTION_APP_NAME }}
+        --storage-account ${{ secrets.STORAGE_ACCOUNT }}
+        --docker-registry-server-url https://${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io
+        --docker-custom-image-name ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
 
     - name: Update Azure Function App with new Docker Image
       if: env.exists == 'true'
       run: |
-        az functionapp config container set --name ${{ secrets.FUNCTION_APP_NAME }} --resource-group ${{ secrets.RESOURCE_GROUP }} --docker-custom-image-name ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
+        az functionapp config container set
+        --name ${{ secrets.FUNCTION_APP_NAME }}
+        --resource-group ${{ secrets.RESOURCE_GROUP }}
+        --image ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
 
 

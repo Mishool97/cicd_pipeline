@@ -74,9 +74,7 @@ jobs:
         --runtime-version 3.11 \
         --functions-version 4 \
         --name ${{ secrets.FUNCTION_APP_NAME }} \
-        --storage-account ${{ secrets.STORAGE_ACCOUNT }} \
-        --docker-registry-server-url https://${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io \
-        --docker-custom-image-name ${{ secrets.AZURE_ACR_USERNAME }}.azurecr.io/clickstream_generator:latest
+        --storage-account ${{ secrets.STORAGE_ACCOUNT }}
 
     - name: Update Azure Function App with new Docker Image
       if: env.exists == 'true'

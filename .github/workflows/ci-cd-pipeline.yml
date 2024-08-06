@@ -68,7 +68,10 @@ jobs:
       - name: Terraform Init
         run: |
           pwd
-          cd ./terraform
+          ls
+          cd .
+          ls
+          cd terraform
           terraform init
 
       - name: Terraform Apply

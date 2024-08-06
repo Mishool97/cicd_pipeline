@@ -66,8 +66,10 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
-        run: terraform init
-        working-directory: cicd_pipeline/terraform
+      - run: |
+          pwd
+          cd ./terraform
+          terraform init
 
       - name: Terraform Apply
         env:

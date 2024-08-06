@@ -77,6 +77,11 @@ jobs:
         run: |
           terraform init
         working-directory: ./terraform
+      
+      - name: Import Existing Resource Group
+        run: |
+          terraform import azurerm_resource_group.rg /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ secrets.RESOURCE_GROUP }}
+        working-directory: ./terraform
 
       - name: Terraform Apply
         env:

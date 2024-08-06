@@ -62,22 +62,16 @@ jobs:
       - unit-tests
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Print Working Directory
-        run: pwd
-
-      - name: List Root Directory Contents
-        run: ls -al
-
-      - name: List cicd_pipeline Directory Contents
-        run: ls -al cicd_pipeline
-
       - name: Terraform Init
         run: |
-          cd cicd_pipeline/terraform
           terraform init
+        working-directory: ./terraform
 
       - name: Terraform Apply
         env:
@@ -87,5 +81,5 @@ jobs:
           TF_VAR_acr_name: ${{ secrets.AZURE_ACR_USERNAME }}
           TF_VAR_acr_image_tag: "latest"
         run: |
-          cd cicd_pipeline/terraform
           terraform apply -auto-approve
+        working-directory: ./terraform

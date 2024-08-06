@@ -43,11 +43,12 @@ resource "azurerm_function_app" "function" {
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME             = "python"
+    PYTHON_VERSION                       = "3.11"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE  = "false"
     AzureWebJobsStorage                  = azurerm_storage_account.storage.primary_connection_string
   }
 
-  version = "~3"
+  version = "~4"
 }
 
 variable "resource_group_name" {

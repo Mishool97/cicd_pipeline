@@ -1,7 +1,6 @@
 import random
 import time
 import uuid
-import json
 from datetime import datetime, timedelta
 import pandas as pd
 import s3fs

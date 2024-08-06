@@ -67,7 +67,7 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: terraform
+        working-directory: cicd_pipeline/terraform
 
       - name: Terraform Apply
         env:
@@ -77,4 +77,4 @@ jobs:
           TF_VAR_acr_name: ${{ secrets.AZURE_ACR_USERNAME }}
           TF_VAR_acr_image_tag: "latest"
         run: terraform apply -auto-approve
-        working-directory: ./terraform
+        working-directory: cicd_pipeline/terraform
